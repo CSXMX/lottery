@@ -10,6 +10,12 @@
 
 <body>
     <div id="lucky"></div>
+    <div id="container">
+        请输入参与抽奖的人的姓名(用逗号分隔)：
+        <br>
+        <input type="text" class="input">
+        <button class="start">开抽</button>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/lucky-canvas@1.7.25"></script>
 <script>
@@ -19,41 +25,84 @@
         project: ['csc', '红牛', '罗盘', '账房', '再来一次'],
         background: ['#a9ecfe', '#b8e5d2', '#bb8fed', '#f1cef2', '#efa8fe', '#b8c5f2']
     }
-    let type = 'name'
-    for (let key in config) {
-        config[key] = randomArray(config[key])
-    }
-    const selectLucky = () => {
-        return Math.floor(Math.random() * config[type].length)
-    }
+    let prizes;
+    const start = (str) => {
+        // 拆分字符串
+        if (str !== '') {
+            config.name = str.replace(/\，/g, ',').split(',')
+        }
+        // 抽奖逻辑
+        let type = 'name'
+        const prizeImg = {
+            src: '/小鸟.png',
+            width: '45%',
+            top: '12%',
+        }
+        for (let key in config) {
+            config[key] = randomArray(config[key])
+        }
+        const selectLucky = () => {
+            return Math.floor(Math.random() * config[type].length)
+        }
 
-    let prizes = config[type].map((item, inx) => {
-        return { background: config.background[inx], fonts: [{ text: item }] }
-    })
-    const myLucky = new LuckyCanvas.LuckyWheel('#lucky', {
-        width: '300px',
-        height: '300px',
-        blocks: [{ padding: '10px', background: '#617df2' }],
-        prizes,
-        buttons: [{
-            radius: '35%',
+        prizes = config[type].map((item, inx) => {
+            return {
+                background: config.background[inx], fonts: [{ text: item }],
+                imgs: [prizeImg]
+            }
+        })
+        let buttons = [{
+            radius: '30%',
             background: '#8a9bf3',
             pointer: true,
             fonts: [{ text: '开始', top: '-10px' }]
-        }],
-        start: function () {
-            // 开始游戏
-            myLucky.play()
-            // 使用定时器模拟接口
-            setTimeout(() => {
-                // 结束游戏
-                let lucky = selectLucky()
-                console.log(config[type][lucky]);
-                myLucky.stop(lucky)
-            }, 100)
-        }
-    })
+        }]
+        buttons = [{
+            radius: '20%',
+            imgs: [{
+                src: '/光头强.png',
+                width: '100%',
+                height: '100%',
+                top: '-80%'
+            }],
+            pointer: true,
+            background: '#8a9bf3',
+        }]
+        const myLucky = new LuckyCanvas.LuckyWheel('#lucky', {
+            width: '500px',
+            height: '500px',
+            blocks: [{ padding: '1px', background: '#617df2' }],
+            prizes,
+            buttons,
+            defaultConfig: {
+                speed: 12,
+                stopRange: Math.random() * 0.8 * (Math.random() > 0.5 ? 1 : -1)
+            },
+            start: function () {
+                // 开始游戏
+                myLucky.play()
+                // 使用定时器模拟接口
+                setTimeout(() => {
+                    // 结束游戏
+                    let lucky = selectLucky()
+                    console.log(config[type][lucky]);
+                    myLucky.stop(lucky)
+                }, 100)
+            }
+        })
+        document.querySelector('#container').remove()
+    }
 
+    document.getElementsByClassName('start')[0].addEventListener('click', () => {
+        const node = document.getElementsByClassName('input')[0]
+        start(node.value)
+    })
+    document.getElementsByClassName('input')[0].addEventListener('keydown', (event) => {
+        if (event && event.keyCode === 13) {
+            start(event.target.value)
+        }
+
+    })
 </script>
 
 </html>

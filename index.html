@@ -6,15 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>抽奖</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="lucky"></div>
-    <div id="container">
-        请输入参与抽奖的人的姓名(用逗号分隔)：
-        <br>
-        <input type="text" class="input">
-        <button class="start">开抽</button>
+    <div id="root">
+        <div id="lucky"></div>
+        <div id="container">
+            请输入参与抽奖的人的姓名(用逗号分隔)：
+            <br>
+            <input type="text" class="input">
+            <button class="start">开抽</button>
+        </div>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/lucky-canvas@1.7.25"></script>
@@ -69,8 +80,8 @@
             background: '#8a9bf3',
         }]
         const myLucky = new LuckyCanvas.LuckyWheel('#lucky', {
-            width: '480px',
-            height: '480px',
+            width: '470px',
+            height: '470px',
             blocks: [{ padding: '1px', background: '#617df2' }],
             prizes,
             buttons,

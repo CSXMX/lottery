@@ -34,9 +34,17 @@
     const config = {
         name: ['贾逊雅', '李长沁', '王莉', '张悦', '郑瑜栋', '再来一次'],
         project: ['csc', '红牛', '罗盘', '账房', '再来一次'],
-        background: ['#a9ecfe', '#b8e5d2', '#bb8fed', '#f1cef2', '#efa8fe', '#b8c5f2']
+        background: ['#a9ecfe', '#b8e5d2', '#bb8fed', '#f1cef2', '#efa8fe',
+            '#b8c5f2', '#9388e0', '#28b596', '#5cb1d3', '#644a2d']
     }
     let prizes;
+    function color16() {//十六进制颜色随机
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        const color = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+        return color;
+    }
     const start = (str) => {
         // 拆分字符串
         if (str !== '') {
@@ -48,6 +56,17 @@
             src: '/小鸟.png',
             width: '100px',
             top: '30px',
+        }
+        let typeLen = config[type].length;
+        let colorLen = config.background.length;
+        if (colorLen < typeLen) {
+            let arr = config.background;
+            let timer = typeLen - colorLen;
+            while (timer--) {
+                arr.push(color16())
+            }
+            console.log(arr);
+            config.background = arr;
         }
         for (let key in config) {
             config[key] = randomArray(config[key])
